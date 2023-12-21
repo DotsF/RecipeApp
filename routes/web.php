@@ -14,18 +14,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// ウェルカムページを表示するルート
 Route::get('/', function () {
     return view('welcome');
 });
 
+// ダッシュボードページのルート定義
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+// 認証済みユーザー向けのグループ化されたルート
 Route::middleware('auth')->group(function () {
+    // ユーザープロフィールの編集ページへのルート
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    // ユーザープロフィールの更新を行うルート
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    // ユーザープロフィールの削除を行うルート
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+// 外部の認証関連のルートを読み込む
+require __DIR__ . '/auth.php';
