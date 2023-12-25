@@ -49,7 +49,20 @@ class RecipeController extends Controller
      */
     public function index()
     {
-        // リソースの一覧を表示
+        // レシピを取得しています
+        $recipes =
+            Recipe::select(
+                'recipes.id',
+                'recipes.title',
+                'recipes.description',
+                'recipes.created_at',
+                'recipes.image',
+                'users.name'
+            )
+            ->join('users', 'users.id', '=', 'recipes.user_id') // ユーザーテーブルとの結合
+            ->orderBy('recipes.created_at', 'desc') // 作成日時で降順に並べ替え
+            ->get(); // 取得
+        dd($recipes);
     }
 
     /**
