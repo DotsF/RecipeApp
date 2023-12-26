@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 // ウェルカムページを表示するルート
 Route::get('/', [RecipeController::class, 'home'])->name('home');
+Route::get('/recipes', [RecipeController::class, 'index'])->name('recipe.index');
 
 // ダッシュボードページのルート定義
 Route::get('/dashboard', function () {
