@@ -121,10 +121,14 @@ class RecipeController extends Controller
      */
     public function show(string $id)
     {
-        $recipe = Recipe::find($id);
-        $recipe->increment('views'); //PV数を増やす
+        $recipe = Recipe::with(['ingredients', 'steps', 'reviews'])
+            ->where('recipes.id', $id)
+            ->get();
+        $recipe = $recipe[0];
+        $recipe_record = Recipe::find($id);
+        $recipe_record = $recipe->increment('views'); //PV数を増やす
         //リレーションで材料とステップを取得
-        // dd($recipe);
+        //dd($recipe);
         return view('recipes.show', compact('recipe'));
     }
 
