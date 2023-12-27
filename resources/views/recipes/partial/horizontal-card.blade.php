@@ -1,4 +1,4 @@
- <a href=""
+ <a href="{{ route('recipe.show', ['id' => $recipe['id']]) }}"
      class="flex flex-col items-center
                     bg-white mb-6 border border-gray-200
                     rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100">

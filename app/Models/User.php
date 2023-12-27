@@ -44,4 +44,14 @@ class User extends Authenticatable
         'password' => 'hashed',
         'id' => 'string' //idカラムをテキストにする宣言
     ];
+
+    public function recipes()
+    {
+        return $this->hasMany(Recipe::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
 }
