@@ -106,6 +106,7 @@ class RecipeController extends Controller
     public function create()
     {
         // 新しいリソースの作成フォームを表示
+        return view('recipes.create');
     }
 
     /**

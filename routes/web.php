@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RecipeController;
+use App\Models\Recipe;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,7 +19,6 @@ use Illuminate\Support\Facades\Route;
 // ウェルカムページを表示するルート
 Route::get('/', [RecipeController::class, 'home'])->name('home');
 Route::get('/recipes', [RecipeController::class, 'index'])->name('recipe.index');
-Route::get('/recipes/{id}', [RecipeController::class, 'show'])->name('recipe.show');
 
 // ダッシュボードページのルート定義
 Route::get('/dashboard', function () {
@@ -27,6 +27,7 @@ Route::get('/dashboard', function () {
 
 // 認証済みユーザー向けのグループ化されたルート
 Route::middleware('auth')->group(function () {
+    Route::get('/recipes/create', [RecipeController::class, 'create'])->name('recipe.create');
     // ユーザープロフィールの編集ページへのルート
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     // ユーザープロフィールの更新を行うルート
@@ -34,6 +35,8 @@ Route::middleware('auth')->group(function () {
     // ユーザープロフィールの削除を行うルート
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('/recipes/{id}', [RecipeController::class, 'show'])->name('recipe.show');
 
 // 外部の認証関連のルートを読み込む
 require __DIR__ . '/auth.php';
