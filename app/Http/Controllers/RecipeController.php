@@ -124,7 +124,7 @@ class RecipeController extends Controller
         $recipe = Recipe::find($id);
         $recipe->increment('views'); //PV数を増やす
         //リレーションで材料とステップを取得
-        dd($recipe);
+        // dd($recipe);
         return view('recipes.show', compact('recipe'));
     }
 
