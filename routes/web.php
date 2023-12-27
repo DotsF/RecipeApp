@@ -28,6 +28,7 @@ Route::get('/dashboard', function () {
 // 認証済みユーザー向けのグループ化されたルート
 Route::middleware('auth')->group(function () {
     Route::get('/recipes/create', [RecipeController::class, 'create'])->name('recipe.create');
+    Route::post('/recipes', [RecipeController::class, 'store'])->name('recipe.store');
     // ユーザープロフィールの編集ページへのルート
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     // ユーザープロフィールの更新を行うルート

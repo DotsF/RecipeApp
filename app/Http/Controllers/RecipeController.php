@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Recipe;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class RecipeController extends Controller
 {
@@ -106,7 +108,9 @@ class RecipeController extends Controller
     public function create()
     {
         // 新しいリソースの作成フォームを表示
-        return view('recipes.create');
+
+        $categories = Category::all();
+        return view('recipes.create', compact('categories'));
     }
 
     /**
@@ -115,6 +119,14 @@ class RecipeController extends Controller
     public function store(Request $request)
     {
         // 新しいリソースを保存
+        $posts = $request->all();
+        Recipe::insert([
+            'id' => Str::uuid(),
+            'title' => $posts['title'],
+            'description' => $posts['description'],
+            'category_id' => $posts['category'],
+            'user_id' => Auth::id()
+        ]);
     }
 
     /**
