@@ -1,18 +1,18 @@
 <x-app-layout>
     <div class="p-4 mx-auto bg-white rounded">
         {{ Breadcrumbs::render('show', $recipe) }}
-        <div class="grid grid-cols-2 rounded border border-black">
+        <div class="grid grid-cols-2 rounded border border-gray-400 mt-4">
             {{-- レシピの詳細 --}}
             <div class="col-span-1">
-                <img class="object-cover rounded-t-lg h-40 w-full mrounded-none rounded-l-lg" src="{{ $recipe['image'] }}"
+                <img class="object-cover aspect-square w-full mrounded-none" src="{{ $recipe['image'] }}"
                     alt="{{ $recipe['title'] }}">
             </div>
-            <div class="col-span-1">
-                <p>{{ $recipe['description'] }}</p>
-                <p>{{ $recipe['user']['name'] }}</p>
-                <h4 class="text-2xl font-bold mb-2 ">材料</h4>
+            <div class="col-span-1 p-4">
+                <p class="mb-4">{{ $recipe['description'] }}</p>
+                <p class="mb-4 text-gray-500">{{ $recipe['user']['name'] }}</p>
+                <h4 class="text-2xl font-bold mb-2">材料</h4>
                 @foreach ($recipe['ingredients'] as $i)
-                    <ul>
+                    <ul class="text-gray-500 ml-5">
                         <li>{{ $i['name'] }}:{{ $i['quantity'] }}</li>
                     </ul>
                 @endforeach
@@ -21,15 +21,17 @@
         <br>
         {{-- steps --}}
         <div>
-            <h4 class="text-2xl font-bold mb-2 ">作り方</h4>
-            @foreach ($recipe['steps'] as $s)
-                <div class="flex items-center mb-2">
-                    <div class="w-10 h-10 flex items-center justify-center bg-gray-200 rounded-full mr-4">
-                        {{ $s['step_number'] }}
+            <h4 class="text-2xl font-bold mb-6">作り方</h4>
+            <div class="grid grid-cols-4  gap-4">
+                @foreach ($recipe['steps'] as $s)
+                    <div class="mb-2 bg-color p-2  rounded ">
+                        <div class="w-10 h-10 flex items-center justify-center bg-white rounded-full mr-4 mb-2">
+                            {{ $s['step_number'] }}
+                        </div>
+                        <p> {{ $s['description'] }}</p>
                     </div>
-                    <p> {{ $s['description'] }}</p>
-                </div>
-            @endforeach
+                @endforeach
+            </div>
         </div>
     </div>
     {{--  reviews --}}
@@ -39,8 +41,8 @@
             <p>まだレビューはありません</p>
         @endif
         @foreach ($recipe['reviews'] as $r)
-            <div class="bg-color rounded mb-2">
-                <div class="flex">
+            <div class="bg-color rounded mb-2 p-4">
+                <div class="flex mb-4">
                     @for ($i = 0; $i < $r['rating']; $i++)
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                             class="w-6 h-6 text-yellow-400">
@@ -49,9 +51,9 @@
                                 clip-rule="evenodd" />
                         </svg>
                     @endfor
-                    <p> {{ $r['comment'] }}</p>
+                    <p class="ml-2"> {{ $r['comment'] }}</p>
                 </div>
-                <p>{{ $r['user']['name'] }}</p>
+                <p class="font-bold text-gray-600 ">{{ $r['user']['name'] }}</p>
             </div>
         @endforeach
     </div>
