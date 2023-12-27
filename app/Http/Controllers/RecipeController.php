@@ -121,7 +121,11 @@ class RecipeController extends Controller
      */
     public function show(string $id)
     {
-        // 指定されたリソースを表示
+        $recipe = Recipe::find($id);
+        $recipe->increment('views'); //PV数を増やす
+        //リレーションで材料とステップを取得
+        dd($recipe);
+        return view('recipes.show', compact('recipe'));
     }
 
     /**
