@@ -1,12 +1,15 @@
 <x-app-layout>
     <!-- recipe.store ルートへのフォームのアクション -->
-    <form action="{{ route('recipe.store') }}" method="POST" class="p-4 mx-auto bg-white rounded">
+    <form action="{{ route('recipe.store') }}" method="POST" class="p-4 mx-auto bg-white rounded"
+        enctype="multipart/form-data">
         @csrf <!-- CSRF（クロスサイトリクエストフォージェリ） トークン -->
         {{ Breadcrumbs::render('create') }} <!-- パンくずリストの表示 -->
         <div class="grid grid-cols-2 rounded border border-gray-400 mt-4">
             <div class="col-span-1">
+                <!-- レシピ画像 -->
                 <img class="object-cover aspect-video w-full mrounded-none" src="/images/recipe-dummy.png"
-                    alt="recipe-image"> <!-- レシピ画像 -->
+                    alt="recipe-image">
+                <input type="file" name="image" class="border border-gray-300 p-2 mb-4 w-full rounded">
             </div>
             <div class="col-span-1 p-4">
                 <!-- レシピ名の入力 -->
@@ -28,6 +31,8 @@
                     </button>
                 </div>
             </div>
+
+
 
         </div>
     </form>

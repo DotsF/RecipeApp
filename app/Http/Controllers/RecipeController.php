@@ -120,6 +120,10 @@ class RecipeController extends Controller
     {
         // 新しいリソースを保存
         $posts = $request->all();
+        // dd($posts);
+        // S3に画像をアップロード
+        // S3のURLを取得
+        // DBにはURLを保存
         Recipe::insert([
             'id' => Str::uuid(),
             'title' => $posts['title'],
