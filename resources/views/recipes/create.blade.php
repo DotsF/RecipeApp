@@ -1,4 +1,7 @@
 <x-app-layout>
+    <x-slot name="script">
+        <script src="/js/recipe/create.js"></script>
+    </x-slot>
     <!-- recipe.store ルートへのフォームのアクション -->
     <form action="{{ route('recipe.store') }}" method="POST" class="p-4 mx-auto bg-white rounded"
         enctype="multipart/form-data">
@@ -31,9 +34,20 @@
                     </button>
                 </div>
             </div>
-
-
-
+        </div>
+        {{-- underline --}}
+        <hr class="my-4">
+        <h4 class="text-bold text-xl mb-4">手順を入力</h4>
+        <div id="steps">
+            @for ($i = 1; $i < 4; $i++)
+                <div class="step flex justify-center">
+                    @include('components.icon.bars-3')
+                    <p class="text-center">手順{{ $i }}</p>
+                    <input type="text" name="steps[]" placeholder="手順を入力"
+                        class="border border-gray-300 p-2 mb-4 w-full rounded">
+                    @include('components.icon.trash')
+                </div>
+            @endfor
         </div>
     </form>
 </x-app-layout>
