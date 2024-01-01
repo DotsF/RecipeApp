@@ -52,4 +52,40 @@ window.onload = function () {
         `;
         steps.appendChild(step);
     });
-};
+
+    //材料の追加
+    var ingredients = document.getElementById("ingredients");
+    Sortable.create(ingredients, {
+        animation: 150,
+        handle: ".handle",
+        onEnd: function (event) {
+            var items = ingredients.querySelectorAll(".ingredient");
+            items.forEach(function (item, index) {
+                item.querySelector(
+                    ".ingredient-name"
+                ).name = `ingredients[${index}][name]`;
+                item.querySelector(
+                    ".ingredient-quantity"
+                ).name = `ingredients[${index}][quantity]`;
+            });
+        },
+    });
+    //材料の削除
+    ingredients.addEventListener("click", function (event) {
+        if (
+            event.target.classList.contains("ingredient-delete") ||
+            event.target.closest(".ingredient-delete")
+        ) {
+            event.target.closest(".ingredient").remove();
+            var items = ingredients.querySelectorAll(".ingredient");
+            items.forEach(function (item, index) {
+                item.querySelector(
+                    ".ingredient-name"
+                ).name = `ingredients[${index}][name]`;
+                item.querySelector(
+                    ".ingredient-quantity"
+                ).name = `ingredients[${index}][quantity]`;
+            });
+        }
+    });
+}; // window.onload = function(){
