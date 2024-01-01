@@ -41,14 +41,19 @@
         <h4 class="text-bold text-xl mb-4">手順を入力</h4>
         <div id="steps">
             @for ($i = 1; $i < 4; $i++)
-                <div class="step flex justify-center">
+                <div class="step flex justify-between items-center mb-2">
                     @include('components.icon.bars-3')
-                    <p class="text-center step-number">手順{{ $i }}</p>
+                    <p class="text-center step-number w-16">手順{{ $i }}</p>
                     <input type="text" name="steps[]" placeholder="手順を入力"
-                        class="border border-gray-300 p-2 mb-4 w-full rounded">
+                        class="border border-gray-300 p-2 w-full rounded">
                     @include('components.icon.trash')
                 </div>
             @endfor
         </div>
+        {{-- add button --}}
+        <button type="button" id="step-add"
+            class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+            手順を追加する
+        </button>
     </form>
 </x-app-layout>
