@@ -7,6 +7,7 @@ use App\Models\Recipe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class RecipeController extends Controller
@@ -118,17 +119,27 @@ class RecipeController extends Controller
      */
     public function store(Request $request)
     {
+
         // 新しいリソースを保存
         $posts = $request->all();
         // dd($posts);
+        // リクエストから直接ファイルを指定して取得。
+        $image = $request->file('image');
         // S3に画像をアップロード
+        // Storageファサードを使用して、s3に対してプットファイルする。
+        // putFileには引数が3つあり、recipeというファイルへ画像をアップロードした時点で、Webに公開される。
+        $path = Storage::disk('s3')->putFile('recipe', $image, 'public');
+        // dd($path);
         // S3のURLを取得
+        $url = Storage::disk('s3')->url($path);
+        // dd($url);
         // DBにはURLを保存
         Recipe::insert([
             'id' => Str::uuid(),
             'title' => $posts['title'],
             'description' => $posts['description'],
             'category_id' => $posts['category'],
+            'image' => $url,
             'user_id' => Auth::id()
         ]);
     }
