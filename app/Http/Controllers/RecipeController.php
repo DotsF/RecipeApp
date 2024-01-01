@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Recipe;
+use App\Models\Step;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+
 
 class RecipeController extends Controller
 {
@@ -122,6 +124,7 @@ class RecipeController extends Controller
 
         // 新しいリソースを保存
         $posts = $request->all();
+        $uuid = Str::uuid()->toString();
         // dd($posts);
         // リクエストから直接ファイルを指定して取得。
         $image = $request->file('image');
@@ -135,13 +138,24 @@ class RecipeController extends Controller
         // dd($url);
         // DBにはURLを保存
         Recipe::insert([
-            'id' => Str::uuid(),
+            'id' => $uuid,
             'title' => $posts['title'],
             'description' => $posts['description'],
             'category_id' => $posts['category'],
             'image' => $url,
             'user_id' => Auth::id()
         ]);
+
+        $steps = [];
+        foreach ($posts['steps'] as $key => $step) {
+            $steps[$key] = [
+                'recipe_id' => $uuid,
+                'step_number' => $key + 1,
+                'description' => $step
+            ];
+        }
+        STEP::insert($steps);
+        dd($steps);
     }
 
     /**
