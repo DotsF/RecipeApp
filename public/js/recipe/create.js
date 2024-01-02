@@ -106,7 +106,8 @@ window.onload = function () {
     var addIngredient = document.getElementById("ingredient-add");
     addIngredient.addEventListener("click", function () {
         var ingredient = document.createElement("div");
-        var ingredientCount = ingredients.querySelectorAll(".step").length;
+        var ingredientCount =
+            ingredients.querySelectorAll(".ingredient").length;
         ingredient.classList.add("ingredient");
         ingredient.classList.add("flex");
         ingredient.classList.add("items-center");
