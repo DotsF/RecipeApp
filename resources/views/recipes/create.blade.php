@@ -11,9 +11,10 @@
         <div class="grid grid-cols-2 rounded border border-gray-400 mt-4">
             <div class="col-span-1">
                 <!-- レシピ画像 -->
-                <img class="object-cover aspect-video w-full mrounded-none" src="/images/recipe-dummy.png"
+                <img id="preview" class="object-cover aspect-video w-full mrounded-none" src="/images/recipe-dummy.png"
                     alt="recipe-image">
-                <input type="file" name="image" class="border border-gray-300 p-2 mb-4 w-full rounded">
+                <input type="file" id="image" name="image"
+                    class="border border-gray-300 p-2 mb-4 w-full rounded">
             </div>
             <div class="col-span-1 p-4">
                 <!-- レシピ名の入力 -->
@@ -55,12 +56,6 @@
                         材料を追加する
                     </button>
                 </div>
-                <!-- 投稿ボタン -->
-                <div class="flex justify-end">
-                    <button type="submit" class="bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded">
-                        レシピを投稿する
-                    </button>
-                </div>
             </div>
         </div>
         {{-- underline --}}
@@ -83,9 +78,18 @@
             @endfor
         </div>
         {{-- add button --}}
-        <button type="button" id="step-add"
-            class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-            手順を追加する
-        </button>
+        <div class="flex justify-end">
+            <button type="button" id="step-add"
+                class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                手順を追加する
+            </button>
+        </div>
     </form>
+    <hr class="my-4">
+    <!-- 投稿ボタン -->
+    <div class="flex justify-center">
+        <button type="submit" class="bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded">
+            レシピを投稿する
+        </button>
+    </div>
 </x-app-layout>

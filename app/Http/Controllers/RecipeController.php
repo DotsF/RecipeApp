@@ -171,7 +171,7 @@ class RecipeController extends Controller
             Log::debug(print_r($th->getMessage(), true));
             throw $th;
         }
-
+        flash()->success('レシピを投稿しました！');
         return redirect()->route('recipe.show', ['id' => $uuid]);
     }
 
