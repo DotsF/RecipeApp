@@ -18,15 +18,17 @@
             </div>
             <div class="col-span-1 p-4">
                 <!-- レシピ名の入力 -->
-                <input type="text" name="title" placeholder="レシピ名"
+                <input type="text" name="title" value="{{ old('title') }}" placeholder="レシピ名"
                     class="border border-gray-300 p-2 mb-4 w-full rounded">
                 <!-- レシピの説明の入力 -->
-                <textarea name="description" placeholder="レシピの説明" class="border border-gray-300 p-2 mb-4 w-full rounded"></textarea>
+                <textarea name="description" placeholder="レシピの説明" class="border border-gray-300 p-2 mb-4 w-full rounded">{{ old('description') }}</textarea>
                 <!-- カテゴリーの選択 -->
                 <select name="category" class="border border-gray-300 p-2 mb-4 w-full rounded">
                     <option value="">カテゴリー</option>
                     @foreach ($categories as $c)
-                        <option value="{{ $c['id'] }}">{{ $c['name'] }}</option>
+                        <option value="{{ $c['id'] }}" {{ old('category') ?? null == $c['id'] ? 'selected' : '' }}>
+                            {{ $c['name'] }}
+                        </option>
                     @endforeach
                 </select>
                 <!-- 材料の入力 -->
@@ -35,7 +37,8 @@
                     @for ($i = 0; $i < 3; $i++)
                         <div class="ingredient flex items-center mb-4">
                             @include('components.icon.bars-3')
-                            <input type="text" name="ingredients[{{ $i }}][name]" placeholder="材料名"
+                            <input type="text" name="ingredients[{{ $i }}][name]"
+                                value="{{ old('title') }}" placeholder="材料名"
                                 class="ingredient-name border border-gray-300 p-2 w-full rounded ml-4">
                             <p class="mx-2">:</p>
                             <input type="text" name="ingredients[{{ $i }}][quantity]" placeholder="分量"
@@ -57,6 +60,12 @@
                     </button>
                 </div>
             </div>
+        </div>
+        <!-- 投稿ボタン -->
+        <div class="flex justify-center mt-4">
+            <button type="submit" class="bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded">
+                レシピを投稿する
+            </button>
         </div>
         {{-- underline --}}
         <hr class="my-4">
@@ -85,11 +94,4 @@
             </button>
         </div>
     </form>
-    <hr class="my-4">
-    <!-- 投稿ボタン -->
-    <div class="flex justify-center">
-        <button type="submit" class="bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded">
-            レシピを投稿する
-        </button>
-    </div>
 </x-app-layout>
