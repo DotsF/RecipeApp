@@ -44,36 +44,42 @@
                 class="text-blue-700 ">ログイン</a>してください</p>
     @endguest
     @auth
-        <div class="p-4 mx-auto bg-white rounded">
-            <form action="{{ route('review.store', ['id' => $recipe['id']]) }}" method="POST">
-                @csrf
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">
-                        評価
-                    </label>
-                    <select name="rating" id="rating"
-                        class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-2 px-4 pr-8 rounded ">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3" selected>3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                    </select>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="comment">
-                        コメント
-                    </label>
-                    <textarea name="comment" id="comment" cols="30" rows="10"
-                        class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-2 px-4 pr-8 rounded "></textarea>
-                </div>
-                <div class="flex justify-center mt-4">
-                    <button type="submit" class="bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded">
-                        レビューを投稿する
-                    </button>
-                </div>
-            </form>
-        </div>
+        @if ($is_reviewed)
+            <p class="text-center text-gray-500 mb-4">レビューは投稿済みです</p>
+        @elseif($is_my_recipe)
+            <p class="text-center text-gray-500 mb-4">自分のレシピにはレビューできません</p>
+        @else
+            <div class="p-4 mx-auto bg-white rounded">
+                <form action="{{ route('review.store', ['id' => $recipe['id']]) }}" method="POST">
+                    @csrf
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">
+                            評価
+                        </label>
+                        <select name="rating" id="rating"
+                            class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-2 px-4 pr-8 rounded ">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3" selected>3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="comment">
+                            コメント
+                        </label>
+                        <textarea name="comment" id="comment" cols="30" rows="10"
+                            class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-2 px-4 pr-8 rounded "></textarea>
+                    </div>
+                    <div class="flex justify-center mt-4">
+                        <button type="submit" class="bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded">
+                            レビューを投稿する
+                        </button>
+                    </div>
+                </form>
+            </div>
+        @endif
     @endauth
     <div class="p-4 mx-auto bg-white rounded">
         <h4 class="text-2xl font-bold mb-2 ">レビュー</h4>
