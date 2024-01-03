@@ -34,8 +34,12 @@
             </div>
         </div>
     </div>
+    @if ($is_my_recipe)
+        <a href="{{ route('recipe.edit', ['id' => $recipe['id']]) }}"
+            class="block w-2/12 p-4 my-4 mx-auto bg-green-700  rounded text-center text-white hover:bg-green-800">編集する</a>
+    @endif
     {{--  reviews --}}
-    <div class="p-4 mx-auto mt-8 bg-white rounded">
+    <div class="p-4 mx-auto bg-white rounded">
         <h4 class="text-2xl font-bold mb-2 ">レビュー</h4>
         @if (count($recipe['reviews']) == 0)
             <p>まだレビューはありません</p>

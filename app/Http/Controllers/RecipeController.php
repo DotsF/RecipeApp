@@ -188,7 +188,13 @@ class RecipeController extends Controller
         $recipe_record = $recipe->increment('views'); //PV数を増やす
         //リレーションで材料とステップを取得
         //dd($recipe);
-        return view('recipes.show', compact('recipe'));
+        // レシピの投稿者とログインユーザーが同じか
+        $is_my_recipe = false;
+        if (Auth::check() && (Auth::id() === $recipe['user_id'])) {
+            $is_my_recipe = true;
+        }
+
+        return view('recipes.show', compact('recipe', 'is_my_recipe'));
     }
 
     /**
@@ -197,6 +203,11 @@ class RecipeController extends Controller
     public function edit(string $id)
     {
         // 指定されたリソースの編集フォームを表示
+        $recipe = Recipe::with(['ingredients', 'steps', 'reviews.user', 'user'])
+            ->where('recipes.id', $id)
+            ->first();
+        $categories = Category::all();
+        return view('recipes.edit', compact('recipe', 'categories'));
     }
 
     /**

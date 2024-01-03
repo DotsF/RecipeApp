@@ -29,6 +29,7 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/recipes/create', [RecipeController::class, 'create'])->name('recipe.create');
     Route::post('/recipes', [RecipeController::class, 'store'])->name('recipe.store');
+    Route::get('/recipes/edit/{id}', [RecipeController::class, 'edit'])->name('recipe.edit');
     // ユーザープロフィールの編集ページへのルート
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     // ユーザープロフィールの更新を行うルート
