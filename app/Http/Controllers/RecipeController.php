@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\RecipeCreateRequest;
+use App\Http\Requests\RecipeUpdateRequest;
 
 
 class RecipeController extends Controller
@@ -213,7 +214,7 @@ class RecipeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(RecipeUpdateRequest $request, string $id)
     {
         // 指定されたリソースを更新
         $posts = $request->all();
