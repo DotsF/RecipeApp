@@ -4,11 +4,11 @@
         <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     </x-slot>
     <!-- recipe.store ルートへのフォームのアクション -->
-    <form action="{{ route('recipe.store') }}" method="POST" class="p-4 mx-auto bg-white rounded"
-        enctype="multipart/form-data">
+    <form action="{{ route('recipe.update', ['id' => $recipe['id']]) }}" method="POST"
+        class="p-4 mx-auto bg-white rounded" enctype="multipart/form-data">
         @csrf <!-- CSRF（クロスサイトリクエストフォージェリ） トークン -->
         @method('patch')
-        {{ Breadcrumbs::render('create') }} <!-- パンくずリストの表示 -->
+        {{ Breadcrumbs::render('edit') }} <!-- パンくずリストの表示 -->
         <div class="grid grid-cols-2 rounded border border-gray-400 mt-4">
             <div class="col-span-1">
                 <!-- レシピ画像 -->
@@ -67,7 +67,7 @@
         <!-- 投稿ボタン -->
         <div class="flex justify-center mt-4">
             <button type="submit" class="bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded">
-                レシピを投稿する
+                レシピを更新する
             </button>
         </div>
         {{-- underline --}}
