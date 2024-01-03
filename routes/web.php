@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RecipeController;
+use App\Http\Controllers\ReviewController;
 use App\Models\Recipe;
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +30,10 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/recipes/create', [RecipeController::class, 'create'])->name('recipe.create');
     Route::post('/recipes', [RecipeController::class, 'store'])->name('recipe.store');
+    Route::get('/recipes/edit/{id}', [RecipeController::class, 'edit'])->name('recipe.edit');
+    Route::patch('/recipes/update/{id}', [RecipeController::class, 'update'])->name('recipe.update');
+    Route::delete('/recipes/{id}', [RecipeController::class, 'destroy'])->name('recipe.destroy');
+    Route::post('/recipes/{id}/review', [ReviewController::class, 'store'])->name('review.store');
     // ユーザープロフィールの編集ページへのルート
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     // ユーザープロフィールの更新を行うルート

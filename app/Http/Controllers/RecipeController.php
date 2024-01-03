@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\RecipeCreateRequest;
+use App\Http\Requests\RecipeUpdateRequest;
 
 
 class RecipeController extends Controller
@@ -188,7 +189,18 @@ class RecipeController extends Controller
         $recipe_record = $recipe->increment('views'); //PV数を増やす
         //リレーションで材料とステップを取得
         //dd($recipe);
-        return view('recipes.show', compact('recipe'));
+        // レシピの投稿者とログインユーザーが同じか
+        $is_my_recipe = false;
+        if (Auth::check() && (Auth::id() === $recipe['user_id'])) {
+            $is_my_recipe = true;
+        }
+
+        $is_reviewed = false;
+        if (Auth::check()) {
+            $is_reviewed = $recipe->reviews->contains('user_id', Auth::id());
+        }
+
+        return view('recipes.show', compact('recipe', 'is_my_recipe', 'is_reviewed'));
     }
 
     /**
@@ -197,14 +209,73 @@ class RecipeController extends Controller
     public function edit(string $id)
     {
         // 指定されたリソースの編集フォームを表示
+        $recipe = Recipe::with(['ingredients', 'steps', 'reviews.user', 'user'])
+            ->where('recipes.id', $id)
+            ->first();
+        if (!Auth::check() || (Auth::id() !== $recipe['user_id'])) {
+            abort(403);
+        }
+        $categories = Category::all();
+        return view('recipes.edit', compact('recipe', 'categories'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(RecipeUpdateRequest $request, string $id)
     {
         // 指定されたリソースを更新
+        $posts = $request->all();
+        // 画像の分岐
+        $update_array = [
+            'title' => $posts['title'],
+            'description' => $posts['description'],
+            'category_id' => $posts['category'],
+        ];
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            // S3に画像をアップロード
+            // Storageファサードを使用して、s3に対してプットファイルする。
+            // putFileには引数が3つあり、recipeというファイルへ画像をアップロードした時点で、Webに公開される。
+            $path = Storage::disk('s3')->putFile('recipe', $image, 'public');
+            // S3のURLを取得
+            $url = Storage::disk('s3')->url($path);
+            $update_array['image'] = $url;
+        }
+        try {
+            // dd($posts);
+            DB::beginTransaction();
+            Recipe::where('id', $id)->update($update_array);
+            Ingredient::where('recipe_id', $id)->delete();
+            Step::where('recipe_id', $id)->delete();
+            $ingredients = [];
+            foreach ($posts['ingredients'] as $key => $ingredient) {
+                $ingredients[$key] = [
+                    'recipe_id' => $id,
+                    'name' => $ingredient['name'],
+                    'quantity' => $ingredient['quantity']
+                ];
+            }
+            Ingredient::insert($ingredients);
+
+            $steps = [];
+            foreach ($posts['steps'] as $key => $step) {
+                $steps[$key] = [
+                    'recipe_id' => $id,
+                    'step_number' => $key + 1,
+                    'description' => $step
+                ];
+            }
+            STEP::insert($steps);
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            Log::debug(print_r($th->getMessage(), true));
+            throw $th;
+        }
+
+        flash()->success('レシピを更新しました！');
+        return redirect()->route('recipe.show', ['id' => $id]);
     }
 
     /**
@@ -213,5 +284,8 @@ class RecipeController extends Controller
     public function destroy(string $id)
     {
         // 指定されたリソースを削除
+        Recipe::where('id', $id)->delete();
+        flash()->warning('レシピを削除しました！');
+        return redirect()->route('home');
     }
 }
