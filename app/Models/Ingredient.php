@@ -11,7 +11,7 @@ class Ingredient extends Model
 
 
     public function recipe()
-    {
+    { //追加テスト
         return $this->belongsTo(Recipe::class);
     }
 }
