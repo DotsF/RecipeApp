@@ -34,6 +34,7 @@ return [
     */
 
     'mailers' => [
+
         'smtp' => [
             'transport' => 'smtp',
             'url' => env('MAIL_URL'),
